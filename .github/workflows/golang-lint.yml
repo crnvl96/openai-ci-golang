@@ -23,9 +23,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: go mod download
-
       - name: Golang Lint
         uses: golangci/golangci-lint-action@v3
         with:
