@@ -30,5 +30,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # - name: OpenAI code review
+      - name: OpenAI code review
+        uses: crnvl96/openai-ci-golang@v1.0.1
         
