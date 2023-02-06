@@ -12,6 +12,8 @@ func RetrieveRepoName() (string, error) {
 		return "", fmt.Errorf("PULL_REQUEST_INFO environment variable not set")
 	}
 
+	fmt.Println(info)
+
 	name := strings.Split(info, "/")[1]
 
 	return name, nil
