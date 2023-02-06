@@ -46,7 +46,7 @@ func GenerateCodeReview(commits []*github.RepositoryCommit, client *github.Clien
 				os.Exit(1)
 			}
 
-			body := *fileName + "\n" + *&response.Choices[0].Text + "\n"
+			body := *fileName + "\n" + response.Choices[0].Text + "\n"
 
 			comment := &github.IssueComment{
 				Body: &body,
