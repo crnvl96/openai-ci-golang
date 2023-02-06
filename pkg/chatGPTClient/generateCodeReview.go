@@ -4,12 +4,19 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/google/go-github/v50/github"
 	gogpt "github.com/sashabaranov/go-gpt3"
 )
 
-func GenerateCodeReview(commits []*github.RepositoryCommit, client *github.Client, context context.Context, gptClient *gogpt.Client, gptContext context.Context, owner string, repo string) {
+func GenerateCodeReview(commits []*github.RepositoryCommit, client *github.Client, context context.Context, gptClient *gogpt.Client, gptContext context.Context, owner string, repo string, pullRequest string) {
+	prNumber, err := strconv.Atoi(pullRequest)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
 	for _, commit := range commits {
 		files, _, err := client.Repositories.GetCommit(context, owner, repo, *commit.SHA, nil)
 		if err != nil {
@@ -39,15 +46,16 @@ func GenerateCodeReview(commits []*github.RepositoryCommit, client *github.Clien
 				os.Exit(1)
 			}
 
-			issue := &github.IssueRequest{
-				Title: fileName,
-				Body:  &response.Choices[0].Text,
+			body := *fileName + "\n" + *&response.Choices[0].Text + "\n"
+
+			comment := &github.IssueComment{
+				Body: &body,
 			}
 
-			_, _, error := client.Issues.Create(context, owner, repo, issue)
+			_, _, error := client.Issues.CreateComment(context, owner, repo, prNumber, comment)
 			if error != nil {
-				fmt.Println(error)
-				os.Exit(1)
+				fmt.Println("Error:", error)
+				return
 			}
 		}
 	}

@@ -37,5 +37,5 @@ func main() {
 		os.Exit(1)
 	}
 
-	chatGPTClient.GenerateCodeReview(commits, GHClient, GHContext, gptClient, gptContext, owner, repo)
+	chatGPTClient.GenerateCodeReview(commits, GHClient, GHContext, gptClient, gptContext, owner, repo, pullRequest)
 }
