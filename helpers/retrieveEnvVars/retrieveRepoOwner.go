@@ -11,5 +11,5 @@ func RetrieveRepoOwner() (string, error) {
 		return "", fmt.Errorf("PULL_REQUEST_INFO environment variable not set")
 	}
 
-	return "hohoho", nil
+	return "crnvl96", nil
 }
