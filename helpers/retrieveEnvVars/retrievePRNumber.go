@@ -5,10 +5,6 @@ import (
 	"os"
 )
 
-type PullRequestEvent struct {
-	Number int `json:"number"`
-}
-
 func RetrievePRNumber() (string, error) {
 	eventNumber := os.Getenv("PULL_REQUEST_NUMBER")
 	if eventNumber == "" {
