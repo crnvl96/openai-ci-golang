@@ -13,6 +13,12 @@ func main() {
 	gptClient, gptContext := chatGPTClient.GenerateClient()
 	GHClient, GHContext := githubClient.GenerateNewClient()
 
+	pullRequest, err := r.RetrievePRNumber()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
 	owner, err := r.RetrieveRepoOwner()
 	if err != nil {
 		fmt.Println(err)
@@ -20,12 +26,6 @@ func main() {
 	}
 
 	repo, err := r.RetrieveRepoName()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	pullRequest, err := r.RetrievePRNumber()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

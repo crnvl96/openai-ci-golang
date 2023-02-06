@@ -3,7 +3,6 @@ package retrieveEnvVars
 import (
 	"fmt"
 	"os"
-	"strings"
 )
 
 func RetrieveRepoName() (string, error) {
@@ -12,7 +11,5 @@ func RetrieveRepoName() (string, error) {
 		return "", fmt.Errorf("PULL_REQUEST_INFO environment variable not set")
 	}
 
-	name := strings.Split(info, "/")[1]
-
-	return name, nil
+	return info, nil
 }
