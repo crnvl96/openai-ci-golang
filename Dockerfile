@@ -1,6 +1,7 @@
 FROM golang:1.19.5-alpine
-COPY go.mod .
-RUN go mod download
+WORKDIR /usr/src/app
+COPY go.mod go.sum ./
+RUN go mod download && go mod verify
 COPY . .
-RUN go build
+RUN go build -v -o ./...
 CMD ["go", "run", "main.go"]
