@@ -27,8 +27,8 @@ func GenerateCodeReview(commits []*github.RepositoryCommit, client *github.Clien
 			}
 
 			request := gogpt.CompletionRequest{
-				Model:     gogpt.GPT3Ada,
-				MaxTokens: 5,
+				Model:     gogpt.CodexCodeDavinci002,
+				MaxTokens: 2048,
 				Prompt:  "Explain and make suggestions about this code:\n" + *content.Content + "\n",
 			}
 
