@@ -3,4 +3,4 @@ COPY go.mod .
 RUN go mod download
 COPY . .
 RUN go build
-CMD ["/main.sh"]
+CMD ["go", "run", "main.go"]
