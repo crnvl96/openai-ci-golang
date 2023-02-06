@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func RetrieveEnvVars() (string, string, int, error) {
+func RetrieveEnvVars() (string, string, string, error) {
 	apiKey, err := RetrieveAIAPIKey()
 	if err != nil {
 		fmt.Println(err)

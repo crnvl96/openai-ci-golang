@@ -1,3 +1,5 @@
+name: Golang Lint
+
 on:
   push:
     branches: ["*"]
