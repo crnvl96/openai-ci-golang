@@ -39,8 +39,8 @@ func GenerateCodeReview(commits []*github.RepositoryCommit, client *github.Clien
 				os.Exit(1)
 			}
 
-			base := "master"
-			head := "master"
+			base := "main"
+			head := "test-pull-request#003"
 
 			pullRequest := &github.NewPullRequest{
 				Title: fileName,
