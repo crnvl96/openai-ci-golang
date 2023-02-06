@@ -44,9 +44,9 @@ func GenerateCodeReview(commits []*github.RepositoryCommit, client *github.Clien
 				Body:  &response.Choices[0].Text,
 			}
 
-			_, _, errorr := client.Issues.Create(context, owner, repo, issue)
-			if errorr != nil {
-				fmt.Println(errorr)
+			_, _, error := client.Issues.Create(context, owner, repo, issue)
+			if error != nil {
+				fmt.Println(error)
 				os.Exit(1)
 			}
 		}
