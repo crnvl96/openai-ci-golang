@@ -11,5 +11,5 @@ func RetrieveRepoName() (string, error) {
 		return "", fmt.Errorf("PULL_REQUEST_INFO environment variable not set")
 	}
 
-	return "teste", nil
+	return info, nil
 }
