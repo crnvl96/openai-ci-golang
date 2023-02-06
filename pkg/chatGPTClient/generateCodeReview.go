@@ -39,19 +39,14 @@ func GenerateCodeReview(commits []*github.RepositoryCommit, client *github.Clien
 				os.Exit(1)
 			}
 
-			base := "main"
-			head := "test-pull-request#003"
-
-			pullRequest := &github.NewPullRequest{
+			issue := &github.IssueRequest{
 				Title: fileName,
 				Body:  &response.Choices[0].Text,
-				Base: &base,
-				Head: &head,
 			}
 
-			_, _, error := client.PullRequests.Create(context, owner, repo, pullRequest)
-			if error != nil {
-				fmt.Println(error)
+			_, _, errorr := client.Issues.Create(context, owner, repo, issue)
+			if errorr != nil {
+				fmt.Println(errorr)
 				os.Exit(1)
 			}
 		}
