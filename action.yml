@@ -1,0 +1,5 @@
+name: 'ChatGPT Code Review'
+description: 'Automated code review provided by ChatGPT.'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
