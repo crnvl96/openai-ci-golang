@@ -29,7 +29,8 @@ func GenerateCodeReview(commits []*github.RepositoryCommit, client *github.Clien
 			request := gogpt.CompletionRequest{
 				Model:     gogpt.CodexCodeDavinci002,
 				MaxTokens: 2048,
-				Prompt:  "Explain and make suggestions about this code:\n" + *content.Content + "\n",
+				Temperature: 0.5,
+				Prompt:  "Explain this code:\n" + *content.Content + "\n",
 			}
 
 			response, err := gptClient.CreateCompletion(gptContext, request)
@@ -38,9 +39,14 @@ func GenerateCodeReview(commits []*github.RepositoryCommit, client *github.Clien
 				os.Exit(1)
 			}
 
+			base := "master"
+			head := "master"
+
 			pullRequest := &github.NewPullRequest{
 				Title: fileName,
 				Body:  &response.Choices[0].Text,
+				Base: &base,
+				Head: &head,
 			}
 
 			_, _, error := client.PullRequests.Create(context, owner, repo, pullRequest)
