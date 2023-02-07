@@ -37,7 +37,7 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 			GHContext:       args.GHContext,
 			RepositoryOwner: args.RepositoryOwner,
 			RepositoryName:  args.RepositoryName,
-			CommitSHA:       lastCommit.SHA,
+			CommitSHA:       *lastCommit.SHA,
 		},
 	)
 

@@ -25,13 +25,13 @@ func RetrieveFileContent(args RetrieveFileContentArgs) string {
 		nil,
 	)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error:", err)
 		os.Exit(1)
 	}
 
-	fileContent, error := content.GetContent()
-	if error != nil {
-		fmt.Println("Error:", error)
+	fileContent, err := content.GetContent()
+	if err != nil {
+		fmt.Println("Error:", err)
 		os.Exit(1)
 	}
 
