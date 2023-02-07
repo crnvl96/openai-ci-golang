@@ -9,5 +9,5 @@ function calculateDaysBetweenDates(begin, end) {
   const endDay = endDate.getDate();
   const beginDateInDays = beginDay + (beginMonth * 30) + (beginYear * 365);
   const endDateInDays = endDay + (endMonth * 30) + (endYear * 365);
-  return endDateInDays - beginDateInDays;
+  return endDateInDays + beginDateInDays;
 }
