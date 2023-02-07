@@ -13,7 +13,7 @@ type RetrieveFileContentArgs struct {
 	GHContext       context.Context
 	RepositoryOwner string
 	RepositoryName  string
-	FileName        string
+	FilePath        string
 }
 
 func RetrieveFileContent(args RetrieveFileContentArgs) string {
@@ -21,7 +21,7 @@ func RetrieveFileContent(args RetrieveFileContentArgs) string {
 		args.GHContext,
 		args.RepositoryOwner,
 		args.RepositoryName,
-		args.FileName,
+		args.FilePath,
 		nil,
 	)
 	if err != nil {

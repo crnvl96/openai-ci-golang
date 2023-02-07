@@ -44,7 +44,7 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 	)
 
 	for _, file := range filesFromCommit.Files {
-		fileName := *file.Filename
+		filePath := *file.Filename
 
 		fileContent := gh.RetrieveFileContent(
 			gh.RetrieveFileContentArgs{
@@ -52,7 +52,7 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 				GHContext:       args.GHContext,
 				RepositoryOwner: args.RepositoryOwner,
 				RepositoryName:  args.RepositoryName,
-				FileName:        fileName,
+				FilePath:        filePath,
 			},
 		)
 
@@ -66,8 +66,8 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 			},
 		)
 
-		filePath := strings.Split(response, "/")
-		fileTitle := filePath[len(filePath)-1]
+		segmentedFilePath := strings.Split(filePath, "/")
+		fileTitle := segmentedFilePath[len(segmentedFilePath)-1]
 
 		gh.GeneratePullRequestComment(
 			gh.GeneratePullRequestCommentArgs{
