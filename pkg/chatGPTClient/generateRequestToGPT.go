@@ -5,7 +5,7 @@ import (
 )
 
 func GenerateRequestToGPT(content string) gogpt.CompletionRequest {
-	t := "func Sum(a, b int) int {\n\treturn a + b\n}"
+	t := "Explain code: func Sum(a, b int) int {\n\treturn a + b\n}"
 
 	request := gogpt.CompletionRequest{
 		Model:       gogpt.GPT3TextDavinci002,
