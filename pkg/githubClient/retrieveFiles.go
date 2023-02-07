@@ -8,26 +8,26 @@ import (
 	"github.com/google/go-github/v50/github"
 )
 
-type RetrieveCommitsArgs struct{
-	PullRequestNumber int
-	GHClient *github.Client
+type RetrieveFilesArgs struct {
+	GHClient	*github.Client
 	GHContext context.Context
 	RepositoryOwner string
 	RepositoryName string
+	CommitSHA *string
 }
 
-func RetrieveCommits(args RetrieveCommitsArgs) []*github.RepositoryCommit {
-	commits, _, err := args.GHClient.PullRequests.ListCommits(
+func RetrieveFiles(args RetrieveFilesArgs) *github.RepositoryCommit {
+	files, _, err := args.GHClient.Repositories.GetCommit(
 		args.GHContext,
 		args.RepositoryOwner,
 		args.RepositoryName,
-		args.PullRequestNumber,
+		*args.CommitSHA,
 		nil,
-	)
+	)	
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	return commits
+	return files
 }

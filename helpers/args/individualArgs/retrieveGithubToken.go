@@ -1,4 +1,4 @@
-package retrieveEnvVars
+package individualArgs
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 )
 
 func RetrieveGithubToken() (string, error) {
-	githubToken := os.Getenv("GITHUB_TOKEN")
+	githubToken := os.Getenv("GITHUB_TOKEN")	
 	if githubToken == "" {
 		return "", fmt.Errorf("GITHUB_TOKEN environment variable not set")
 	}

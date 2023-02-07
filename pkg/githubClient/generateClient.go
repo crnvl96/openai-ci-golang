@@ -2,28 +2,20 @@ package githubClient
 
 import (
 	"context"
-	"fmt"
-	"os"
 
-	r "github.com/crnvl96/openai-ci-golang/helpers/retrieveEnvVars"
 	"github.com/google/go-github/v50/github"
 	"golang.org/x/oauth2"
 )
 
-func GenerateNewClient() (*github.Client, context.Context) {
-	token, err := r.RetrieveGithubToken()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	context := context.Background();
+func GenerateNewClient(ghToken string) (*github.Client, context.Context) {
+	ghContext := context.Background();
+	
 	tokenSource := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: token},
+		&oauth2.Token{AccessToken: ghToken},
 	)
-	tokenClient := oauth2.NewClient(context, tokenSource)
 
-	client := github.NewClient(tokenClient)
+	tokenClient := oauth2.NewClient(ghContext, tokenSource)
+	ghClient := github.NewClient(tokenClient)
 
-	return client, context
+	return ghClient, ghContext
 }

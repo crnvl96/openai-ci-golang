@@ -2,61 +2,78 @@ package chatGPTClient
 
 import (
 	"context"
-	"fmt"
-	"os"
-	"strconv"
 
+	gh "github.com/crnvl96/openai-ci-golang/pkg/githubClient"
 	"github.com/google/go-github/v50/github"
 	gogpt "github.com/sashabaranov/go-gpt3"
 )
 
-func GenerateCodeReview(commits []*github.RepositoryCommit, client *github.Client, context context.Context, gptClient *gogpt.Client, gptContext context.Context, owner string, repo string, pullRequest string) {
-	prNumber, err := strconv.Atoi(pullRequest)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
+type GenerateCodeReviewArgs struct {
+	GHClient  *github.Client
+	GHContext context.Context
+	GPTClient *gogpt.Client
+	GPTContext context.Context
+	RepositoryOwner   string
+	RepositoryName    string
+	PullRequestNumber int
+}
+
+func GenerateCodeReview(args GenerateCodeReviewArgs) {
+	commits := gh.RetrieveCommits(
+		gh.RetrieveCommitsArgs{
+			PullRequestNumber: args.PullRequestNumber,
+			GHClient: args.GHClient,
+			GHContext: args.GHContext,
+			RepositoryOwner: args.RepositoryOwner,
+			RepositoryName: args.RepositoryName,
+		},
+	)
 
 	for _, commit := range commits {
-		files, _, err := client.Repositories.GetCommit(context, owner, repo, *commit.SHA, nil)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-		
+		files := gh.RetrieveFiles(
+			gh.RetrieveFilesArgs{
+				GHClient: args.GHClient,
+				GHContext: args.GHContext,
+				RepositoryOwner: args.RepositoryOwner,
+				RepositoryName: args.RepositoryName,
+				CommitSHA: commit.SHA,
+			},
+		)		
 
 		for _, file := range files.Files {
 			fileName := file.Filename
-			content, _, _, err := client.Repositories.GetContents(context, owner, repo, *fileName, nil)
-			if err != nil {
-				fmt.Println(err)
-				os.Exit(1)
-			}
 
-			request := gogpt.CompletionRequest{
-				Model:     gogpt.CodexCodeDavinci002,
-				MaxTokens: 2048,
-				Temperature: 0.5,
-				Prompt:  "Explain this code:\n" + *content.Content + "\n",
-			}
+			content := gh.RetrieveFileContent(
+				gh.RetrieveFileContentArgs{
+					GHClient: args.GHClient,
+					GHContext: args.GHContext,
+					RepositoryOwner: args.RepositoryOwner,
+					RepositoryName: args.RepositoryName,
+					FileName: *fileName,
+				},
+			)
 
-			response, err := gptClient.CreateCompletion(gptContext, request)
-			if err != nil {
-				fmt.Println(err)
-				os.Exit(1)
-			}
+			request := GenerateRequestToGPT(content.Content)
 
-			body := *fileName + "\n" + response.Choices[0].Text + "\n"
+			response := GetCompletion(
+				GetCompletionArgs{
+					FileName: *fileName,
+					GPTClient: args.GPTClient,
+					GPTContext: args.GPTContext,
+					request: request,
+				},
+			)
 
-			comment := &github.IssueComment{
-				Body: &body,
-			}
-
-			_, _, error := client.Issues.CreateComment(context, owner, repo, prNumber, comment)
-			if error != nil {
-				fmt.Println("Error:", error)
-				return
-			}
+			gh.GeneratePullRequestComment(
+				gh.GeneratePullRequestCommentArgs{
+					Body: response,
+					GHClient: args.GHClient,
+					GHContext: args.GHContext,
+					RepositoryOwner: args.RepositoryOwner,
+					RepositoryName: args.RepositoryName,
+					PullRequestNumber: args.PullRequestNumber,
+				},
+			)
 		}
 	}
 }

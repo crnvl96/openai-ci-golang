@@ -14,7 +14,8 @@ env:
   API_KEY: ${{ secrets.openai_api_key }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   PULL_REQUEST_NUMBER: ${{ github.event.number }}
-  PULL_REQUEST_INFO: ${{ github.event.repository.name }}
+  PULL_REQUEST_INFO: ${{ github.repository }}
+
 
 jobs:
   openai-code-review:

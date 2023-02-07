@@ -1,4 +1,4 @@
-package retrieveEnvVars
+package individualArgs
 
 import (
 	"fmt"
@@ -6,10 +6,10 @@ import (
 )
 
 func RetrieveAIAPIKey() (string, error) {
-	apiKey := os.Getenv("API_KEY")
-	if apiKey == "" {
+	APIKey := os.Getenv("API_KEY")	
+	if APIKey == "" {
 		return "", fmt.Errorf("API_KEY environment variable not set")
 	}
 	
-	return apiKey, nil
+	return APIKey, nil
 }
