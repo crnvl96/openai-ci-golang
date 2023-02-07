@@ -23,7 +23,7 @@ func GetCompletion(args GetCompletionArgs) string {
 	}
 
 	text := completion.Choices[0].Text
-	response := fmt.Sprintf("%v\n\n%v\n", args.FileName, text)
+	response := fmt.Sprintf("%v\n%v\n", args.FileName, text)
 
 	return response
 }

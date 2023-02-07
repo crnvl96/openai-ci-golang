@@ -8,15 +8,15 @@ import (
 	"github.com/google/go-github/v50/github"
 )
 
-type RetrieveFileContentArgs struct{
-	GHClient *github.Client
-	GHContext context.Context
+type RetrieveFileContentArgs struct {
+	GHClient        *github.Client
+	GHContext       context.Context
 	RepositoryOwner string
-	RepositoryName string
-	FileName string
+	RepositoryName  string
+	FileName        string
 }
 
-func RetrieveFileContent(args RetrieveFileContentArgs) *github.RepositoryContent {
+func RetrieveFileContent(args RetrieveFileContentArgs) string {
 	content, _, _, err := args.GHClient.Repositories.GetContents(
 		args.GHContext,
 		args.RepositoryOwner,
@@ -29,5 +29,11 @@ func RetrieveFileContent(args RetrieveFileContentArgs) *github.RepositoryContent
 		os.Exit(1)
 	}
 
-	return content
+	fileContent, error := content.GetContent()
+	if error != nil {
+		fmt.Println("Error:", error)
+		os.Exit(1)
+	}
+
+	return fileContent
 }

@@ -6,12 +6,12 @@ import (
 	gogpt "github.com/sashabaranov/go-gpt3"
 )
 
-func GenerateRequestToGPT(content *string) gogpt.CompletionRequest {
+func GenerateRequestToGPT(content string) gogpt.CompletionRequest {
 	request := gogpt.CompletionRequest{
 		Model:     gogpt.CodexCodeDavinci002,
 		MaxTokens: 2048,
 		Temperature: 0.5,
-		Prompt: fmt.Sprintf("Explain this code:\n%v\n", *content),
+		Prompt: fmt.Sprintf("Explain this code:\n%v", content),
 	}
 
 	return request
