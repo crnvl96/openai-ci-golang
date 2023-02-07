@@ -58,7 +58,6 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 
 		response := GetCompletion(
 			GetCompletionArgs{
-				FileName:   fileName,
 				GPTClient:  args.GPTClient,
 				GPTContext: args.GPTContext,
 				request:    request,

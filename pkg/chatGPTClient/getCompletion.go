@@ -9,10 +9,9 @@ import (
 )
 
 type GetCompletionArgs struct {
-	FileName string
-	GPTClient *gogpt.Client
+	GPTClient  *gogpt.Client
 	GPTContext context.Context
-	request gogpt.CompletionRequest
+	request    gogpt.CompletionRequest
 }
 
 func GetCompletion(args GetCompletionArgs) string {
@@ -22,8 +21,5 @@ func GetCompletion(args GetCompletionArgs) string {
 		os.Exit(1)
 	}
 
-	text := completion.Choices[0].Text
-	response := fmt.Sprintf("%v\n%v\n", args.FileName, text)
-
-	return response
+	return completion.Choices[0].Text
 }
