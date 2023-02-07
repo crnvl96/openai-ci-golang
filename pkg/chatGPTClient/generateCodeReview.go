@@ -41,23 +41,25 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 		)		
 
 		for _, file := range files.Files {
-			fileName := file.Filename
+			fileName := *file.Filename
 
-			content := gh.RetrieveFileContent(
+			fileContent := gh.RetrieveFileContent(
 				gh.RetrieveFileContentArgs{
 					GHClient: args.GHClient,
 					GHContext: args.GHContext,
 					RepositoryOwner: args.RepositoryOwner,
 					RepositoryName: args.RepositoryName,
-					FileName: *fileName,
+					FileName: fileName,
 				},
 			)
 
-			request := GenerateRequestToGPT(content.Content)
+			content := *fileContent.Content
+
+			request := GenerateRequestToGPT(content)
 
 			response := GetCompletion(
 				GetCompletionArgs{
-					FileName: *fileName,
+					FileName: fileName,
 					GPTClient: args.GPTClient,
 					GPTContext: args.GPTContext,
 					request: request,
