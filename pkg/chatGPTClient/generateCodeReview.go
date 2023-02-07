@@ -61,7 +61,7 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 					GHContext:       args.GHContext,
 					RepositoryOwner: args.RepositoryOwner,
 					RepositoryName:  args.RepositoryName,
-					FilePath:        fmt.Sprintf("%s/?ref=%s", filePath, branch),
+					FilePath:        filePath + "/?ref=" + branch,
 				},
 			)
 
