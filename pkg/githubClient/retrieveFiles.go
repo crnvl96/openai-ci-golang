@@ -9,11 +9,11 @@ import (
 )
 
 type RetrieveFilesArgs struct {
-	GHClient	*github.Client
-	GHContext context.Context
+	GHClient        *github.Client
+	GHContext       context.Context
 	RepositoryOwner string
-	RepositoryName string
-	CommitSHA *string
+	RepositoryName  string
+	CommitSHA       string
 }
 
 func RetrieveFiles(args RetrieveFilesArgs) *github.RepositoryCommit {
@@ -21,9 +21,9 @@ func RetrieveFiles(args RetrieveFilesArgs) *github.RepositoryCommit {
 		args.GHContext,
 		args.RepositoryOwner,
 		args.RepositoryName,
-		*args.CommitSHA,
+		args.CommitSHA,
 		nil,
-	)	
+	)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

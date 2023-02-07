@@ -2,6 +2,8 @@ package chatGPTClient
 
 import (
 	"context"
+	"fmt"
+	"strings"
 
 	gh "github.com/crnvl96/openai-ci-golang/pkg/githubClient"
 	"github.com/google/go-github/v50/github"
@@ -37,12 +39,12 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 			GHContext:       args.GHContext,
 			RepositoryOwner: args.RepositoryOwner,
 			RepositoryName:  args.RepositoryName,
-			CommitSHA:       lastCommit.SHA,
+			CommitSHA:       *lastCommit.SHA,
 		},
 	)
 
 	for _, file := range filesFromCommit.Files {
-		fileName := *file.Filename
+		filePath := *file.Filename
 
 		fileContent := gh.RetrieveFileContent(
 			gh.RetrieveFileContentArgs{
@@ -50,7 +52,7 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 				GHContext:       args.GHContext,
 				RepositoryOwner: args.RepositoryOwner,
 				RepositoryName:  args.RepositoryName,
-				FileName:        fileName,
+				FilePath:        filePath,
 			},
 		)
 
@@ -58,16 +60,18 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 
 		response := GetCompletion(
 			GetCompletionArgs{
-				FileName:   fileName,
 				GPTClient:  args.GPTClient,
 				GPTContext: args.GPTContext,
 				request:    request,
 			},
 		)
 
+		segmentedFilePath := strings.Split(filePath, "/")
+		fileTitle := segmentedFilePath[len(segmentedFilePath)-1]
+
 		gh.GeneratePullRequestComment(
 			gh.GeneratePullRequestCommentArgs{
-				Body:              response,
+				Body:              fmt.Sprintf("### Code review for ```%s``` \n %s", fileTitle, response),
 				GHClient:          args.GHClient,
 				GHContext:         args.GHContext,
 				RepositoryOwner:   args.RepositoryOwner,
