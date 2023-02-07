@@ -2,6 +2,7 @@ package chatGPTClient
 
 import (
 	"context"
+	"fmt"
 
 	gh "github.com/crnvl96/openai-ci-golang/pkg/githubClient"
 	"github.com/google/go-github/v50/github"
@@ -66,7 +67,7 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 
 		gh.GeneratePullRequestComment(
 			gh.GeneratePullRequestCommentArgs{
-				Body:              response,
+				Body:              fmt.Sprintf("# %s\n```%s```", fileName, response),
 				GHClient:          args.GHClient,
 				GHContext:         args.GHContext,
 				RepositoryOwner:   args.RepositoryOwner,
