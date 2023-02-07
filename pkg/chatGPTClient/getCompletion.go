@@ -21,5 +21,7 @@ func GetCompletion(args GetCompletionArgs) string {
 		os.Exit(1)
 	}
 
+	fmt.Println("test")
+
 	return completion.Choices[0].Text
 }
