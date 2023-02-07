@@ -54,6 +54,7 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 
 		for _, file := range filesFromCommit.Files {
 			filePath := *file.Filename
+			fileUrl := fmt.Sprintf("%v%#v", filePath, branch)
 
 			fileContent := gh.RetrieveFileContent(
 				gh.RetrieveFileContentArgs{
@@ -61,7 +62,7 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 					GHContext:       args.GHContext,
 					RepositoryOwner: args.RepositoryOwner,
 					RepositoryName:  args.RepositoryName,
-					FilePath:        filePath + "/?ref=" + branch,
+					FilePath:        fileUrl,
 				},
 			)
 
