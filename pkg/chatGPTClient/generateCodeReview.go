@@ -29,51 +29,51 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 		},
 	)
 
-	lastCommit := commits[len(commits)-1]
-
-	filesFromCommit := gh.RetrieveFiles(
-		gh.RetrieveFilesArgs{
-			GHClient:        args.GHClient,
-			GHContext:       args.GHContext,
-			RepositoryOwner: args.RepositoryOwner,
-			RepositoryName:  args.RepositoryName,
-			CommitSHA:       lastCommit.SHA,
-		},
-	)
-
-	for _, file := range filesFromCommit.Files {
-		fileName := *file.Filename
-
-		fileContent := gh.RetrieveFileContent(
-			gh.RetrieveFileContentArgs{
+	for _, commit := range commits {
+		filesFromCommit := gh.RetrieveFiles(
+			gh.RetrieveFilesArgs{
 				GHClient:        args.GHClient,
 				GHContext:       args.GHContext,
 				RepositoryOwner: args.RepositoryOwner,
 				RepositoryName:  args.RepositoryName,
-				FileName:        fileName,
+				CommitSHA:       commit.SHA,
 			},
 		)
 
-		request := GenerateRequestToGPT(fileContent)
+		for _, file := range filesFromCommit.Files {
+			fileName := *file.Filename
 
-		response := GetCompletion(
-			GetCompletionArgs{
-				FileName:   fileName,
-				GPTClient:  args.GPTClient,
-				GPTContext: args.GPTContext,
-				request:    request,
-			},
-		)
+			fileContent := gh.RetrieveFileContent(
+				gh.RetrieveFileContentArgs{
+					GHClient:        args.GHClient,
+					GHContext:       args.GHContext,
+					RepositoryOwner: args.RepositoryOwner,
+					RepositoryName:  args.RepositoryName,
+					FileName:        fileName,
+				},
+			)
 
-		gh.GeneratePullRequestComment(
-			gh.GeneratePullRequestCommentArgs{
-				Body:              response,
-				GHClient:          args.GHClient,
-				GHContext:         args.GHContext,
-				RepositoryOwner:   args.RepositoryOwner,
-				RepositoryName:    args.RepositoryName,
-				PullRequestNumber: args.PullRequestNumber,
-			},
-		)
+			request := GenerateRequestToGPT(fileContent)
+
+			response := GetCompletion(
+				GetCompletionArgs{
+					FileName:   fileName,
+					GPTClient:  args.GPTClient,
+					GPTContext: args.GPTContext,
+					request:    request,
+				},
+			)
+
+			gh.GeneratePullRequestComment(
+				gh.GeneratePullRequestCommentArgs{
+					Body:              response,
+					GHClient:          args.GHClient,
+					GHContext:         args.GHContext,
+					RepositoryOwner:   args.RepositoryOwner,
+					RepositoryName:    args.RepositoryName,
+					PullRequestNumber: args.PullRequestNumber,
+				},
+			)
+		}
 	}
 }
