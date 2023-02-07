@@ -18,8 +18,9 @@ type GeneratePullRequestCommentArgs struct {
 }
 
 func GeneratePullRequestComment(args GeneratePullRequestCommentArgs) {
+	t := "lalalalalalalalala"
 	comment := &github.IssueComment{
-		Body: &args.Body,
+		Body: &t,
 	}
 
 	_, _, error := args.GHClient.Issues.CreateComment(
