@@ -11,7 +11,7 @@ func GenerateRequestToGPT(content string) gogpt.CompletionRequest {
 		Model:       gogpt.GPT3Davinci,
 		MaxTokens:   1028,
 		Temperature: 0.5,
-		Prompt:      fmt.Sprintf("Explain this code:\n %v", content),
+		Prompt:      fmt.Sprintf("Summarize this code:\n %v", content),
 	}
 
 	return request
