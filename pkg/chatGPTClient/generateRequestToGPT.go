@@ -12,7 +12,7 @@ func GenerateRequestToGPT(content string) gogpt.CompletionRequest {
 		MaxTokens:   2048,
 		Temperature: 0.5,
 		Prompt:      t,
-		// Prompt:      fmt.Sprintf("Explain Code:\n %s", content),
+		// Prompt:      fmt.Sprintf("Explain Code: \n %s", content),
 	}
 
 	return request

@@ -71,7 +71,7 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 
 		gh.GeneratePullRequestComment(
 			gh.GeneratePullRequestCommentArgs{
-				Body:              fmt.Sprintf("### Code review for %s\n```%s```", fileTitle, response),
+				Body:              fmt.Sprintf("### Code review for %s \n```%s```", fileTitle, response),
 				GHClient:          args.GHClient,
 				GHContext:         args.GHContext,
 				RepositoryOwner:   args.RepositoryOwner,
