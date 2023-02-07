@@ -9,7 +9,7 @@ import (
 func GenerateRequestToGPT(content string) gogpt.CompletionRequest {
 	request := gogpt.CompletionRequest{
 		Model:       gogpt.GPT3Davinci,
-		MaxTokens:   2048,
+		MaxTokens:   1028,
 		Temperature: 0.5,
 		Prompt:      fmt.Sprintf("Explain this code:\n %v", content),
 	}
