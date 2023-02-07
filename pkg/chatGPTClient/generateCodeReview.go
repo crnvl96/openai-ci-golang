@@ -9,10 +9,10 @@ import (
 )
 
 type GenerateCodeReviewArgs struct {
-	GHClient  *github.Client
-	GHContext context.Context
-	GPTClient *gogpt.Client
-	GPTContext context.Context
+	GHClient          *github.Client
+	GHContext         context.Context
+	GPTClient         *gogpt.Client
+	GPTContext        context.Context
 	RepositoryOwner   string
 	RepositoryName    string
 	PullRequestNumber int
@@ -22,60 +22,58 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 	commits := gh.RetrieveCommits(
 		gh.RetrieveCommitsArgs{
 			PullRequestNumber: args.PullRequestNumber,
-			GHClient: args.GHClient,
-			GHContext: args.GHContext,
-			RepositoryOwner: args.RepositoryOwner,
-			RepositoryName: args.RepositoryName,
+			GHClient:          args.GHClient,
+			GHContext:         args.GHContext,
+			RepositoryOwner:   args.RepositoryOwner,
+			RepositoryName:    args.RepositoryName,
 		},
 	)
 
-	for _, commit := range commits {
-		files := gh.RetrieveFiles(
-			gh.RetrieveFilesArgs{
-				GHClient: args.GHClient,
-				GHContext: args.GHContext,
+	lastCommit := commits[len(commits)-1]
+
+	filesFromCommit := gh.RetrieveFiles(
+		gh.RetrieveFilesArgs{
+			GHClient:        args.GHClient,
+			GHContext:       args.GHContext,
+			RepositoryOwner: args.RepositoryOwner,
+			RepositoryName:  args.RepositoryName,
+			CommitSHA:       lastCommit.SHA,
+		},
+	)
+
+	for _, file := range filesFromCommit.Files {
+		fileName := *file.Filename
+
+		fileContent := gh.RetrieveFileContent(
+			gh.RetrieveFileContentArgs{
+				GHClient:        args.GHClient,
+				GHContext:       args.GHContext,
 				RepositoryOwner: args.RepositoryOwner,
-				RepositoryName: args.RepositoryName,
-				CommitSHA: commit.SHA,
+				RepositoryName:  args.RepositoryName,
+				FileName:        fileName,
 			},
-		)		
+		)
 
-		for _, file := range files.Files {
-			fileName := *file.Filename
+		request := GenerateRequestToGPT(fileContent)
 
-			fileContent := gh.RetrieveFileContent(
-				gh.RetrieveFileContentArgs{
-					GHClient: args.GHClient,
-					GHContext: args.GHContext,
-					RepositoryOwner: args.RepositoryOwner,
-					RepositoryName: args.RepositoryName,
-					FileName: fileName,
-				},
-			)
+		response := GetCompletion(
+			GetCompletionArgs{
+				FileName:   fileName,
+				GPTClient:  args.GPTClient,
+				GPTContext: args.GPTContext,
+				request:    request,
+			},
+		)
 
-			content := *fileContent.Content
-
-			request := GenerateRequestToGPT(content)
-
-			response := GetCompletion(
-				GetCompletionArgs{
-					FileName: fileName,
-					GPTClient: args.GPTClient,
-					GPTContext: args.GPTContext,
-					request: request,
-				},
-			)
-
-			gh.GeneratePullRequestComment(
-				gh.GeneratePullRequestCommentArgs{
-					Body: response,
-					GHClient: args.GHClient,
-					GHContext: args.GHContext,
-					RepositoryOwner: args.RepositoryOwner,
-					RepositoryName: args.RepositoryName,
-					PullRequestNumber: args.PullRequestNumber,
-				},
-			)
-		}
+		gh.GeneratePullRequestComment(
+			gh.GeneratePullRequestCommentArgs{
+				Body:              response,
+				GHClient:          args.GHClient,
+				GHContext:         args.GHContext,
+				RepositoryOwner:   args.RepositoryOwner,
+				RepositoryName:    args.RepositoryName,
+				PullRequestNumber: args.PullRequestNumber,
+			},
+		)
 	}
 }
