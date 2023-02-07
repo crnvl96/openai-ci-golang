@@ -14,6 +14,7 @@ type RetrieveFileContentArgs struct {
 	RepositoryOwner string
 	RepositoryName  string
 	FilePath        string
+	Branch          string
 }
 
 func RetrieveFileContent(args RetrieveFileContentArgs) string {
@@ -22,7 +23,7 @@ func RetrieveFileContent(args RetrieveFileContentArgs) string {
 		args.RepositoryOwner,
 		args.RepositoryName,
 		args.FilePath,
-		nil,
+		&github.RepositoryContentGetOptions{Ref: args.Branch},
 	)
 	if err != nil {
 		fmt.Println("Error:", err)

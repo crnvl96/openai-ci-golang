@@ -31,6 +31,16 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 		},
 	)
 
+	branch := gh.RetrieveBranch(
+		gh.RetrieveBranchArgs{
+			GHClient:          args.GHClient,
+			GHContext:         args.GHContext,
+			RepositoryOwner:   args.RepositoryOwner,
+			RepositoryName:    args.RepositoryName,
+			PullRequestNumber: args.PullRequestNumber,
+		},
+	)
+
 	for _, commit := range commits {
 		filesFromCommit := gh.RetrieveFiles(
 			gh.RetrieveFilesArgs{
@@ -52,6 +62,7 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 					RepositoryOwner: args.RepositoryOwner,
 					RepositoryName:  args.RepositoryName,
 					FilePath:        filePath,
+					Branch:          branch,
 				},
 			)
 
