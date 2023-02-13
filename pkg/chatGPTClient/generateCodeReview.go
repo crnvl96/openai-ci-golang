@@ -21,7 +21,7 @@ type GenerateCodeReviewArgs struct {
 }
 
 func GenerateCodeReview(args GenerateCodeReviewArgs) {
-	commits := gh.RetrieveCommits(
+	allCommits := gh.RetrieveCommits(
 		gh.RetrieveCommitsArgs{
 			PullRequestNumber: args.PullRequestNumber,
 			GHClient:          args.GHClient,
@@ -41,7 +41,7 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 		},
 	)
 
-	for _, commit := range commits {
+	for _, commit := range allCommits {
 		filesFromCommit := gh.RetrieveFiles(
 			gh.RetrieveFilesArgs{
 				GHClient:        args.GHClient,
