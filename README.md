@@ -31,8 +31,8 @@ OpenAI CI Golang is a project that generates automated code review using a Githu
 ## Images
 
 <div align="center">
-  <img width="200px" height="432px" src="./assets/1.png" />
-  <img width="200px" height="432px" src="./assets/2.png" />
+  <img width="432px" height="200px" src="./assets/1.png" />
+  <img width="432px" height="200px" src="./assets/2.png" />
 </div>
 
 ## The development process
