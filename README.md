@@ -1,4 +1,4 @@
-# Ebytr Todo-List
+# OpenAI CI Golang
 
 Github action developed using ChatGPT and Golang, that can be used to generate an automated code review from the AI.
 
