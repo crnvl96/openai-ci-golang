@@ -9,13 +9,10 @@ This github action is not intended to work in an large amount of files, it was m
 - [General view](#general-view)
   - [The Challenge](#the-challenge)
   - [Images](#images)
-  - [Links](#links)
 - [The development process](#the-development-process)
   - [Tools used](#tools-used)
   - [Lessons learned](#lessons-learned)
 - [Usage](#usage)
-- [Testing](#testing)
-- [TroubleShooting](#troubleshooting)
 - [Author](#author)
 
 ## General view
@@ -31,8 +28,8 @@ OpenAI CI Golang is a project that generates automated code review using a Githu
 ## Images
 
 <div align="center">
-  <img width="432px" height="200px" src="./assets/1.png" />
-  <img width="432px" height="200px" src="./assets/2.png" />
+  <img width="432px" height="250px" src="./assets/1.png" />
+  <img width="432px" height="250px" src="./assets/2.png" />
 </div>
 
 ## The development process
