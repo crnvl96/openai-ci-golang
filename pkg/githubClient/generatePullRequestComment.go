@@ -9,16 +9,16 @@ import (
 )
 
 type GeneratePullRequestCommentArgs struct {
-	Body string
-	GHClient *github.Client
-	GHContext context.Context
-	RepositoryOwner string
-	RepositoryName string
+	Body              string
+	GHClient          *github.Client
+	GHContext         context.Context
+	RepositoryOwner   string
+	RepositoryName    string
 	PullRequestNumber int
 }
 
 func GeneratePullRequestComment(args GeneratePullRequestCommentArgs) {
-	comment := &github.IssueComment{
+	newComment := &github.IssueComment{
 		Body: &args.Body,
 	}
 
@@ -27,7 +27,7 @@ func GeneratePullRequestComment(args GeneratePullRequestCommentArgs) {
 		args.RepositoryOwner,
 		args.RepositoryName,
 		args.PullRequestNumber,
-		comment,
+		newComment,
 	)
 
 	if error != nil {
