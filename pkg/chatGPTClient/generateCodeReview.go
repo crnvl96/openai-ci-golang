@@ -66,13 +66,13 @@ func GenerateCodeReview(args GenerateCodeReviewArgs) {
 				},
 			)
 
-			request := GenerateRequestToGPT(fileContent)
+			req := GenerateRequestToGPT(fileContent)
 
 			response := GetCompletion(
 				GetCompletionArgs{
 					GPTClient:  args.GPTClient,
 					GPTContext: args.GPTContext,
-					request:    request,
+					request:    req,
 				},
 			)
 
